@@ -6,11 +6,12 @@ var ip_actual = "";
 var usuariogmail = "*****"
 var contraseñagmail = "****"
 var correodestino = "*****"
-var tiempointervalo = 100000;
+var tiempointervalo = 1000;
 var file = 'ip.json';
+file = __dirname+'/'+file;
 
 ip_actual = jsonfile.readFileSync(file).ip;
-
+console.log(__dirname);
 
 setInterval(function know_public_ip(){
     console.log("Realizando petición");
