@@ -1,11 +1,15 @@
 var http = require('http');
 var nodemailer = require('nodemailer');
+var jsonfile = require('jsonfile');
 
 var ip_actual = "";
 var usuariogmail = "*****"
 var contraseñagmail = "****"
 var correodestino = "*****"
 var tiempointervalo = 100000;
+var file = 'ip.json';
+
+ip_actual = jsonfile.readFileSync(file).ip;
 
 
 setInterval(function know_public_ip(){
@@ -17,6 +21,10 @@ setInterval(function know_public_ip(){
         if(ip_actual != ip.toString()){
           console.log("La IP pública ha cambiado " + ip_actual + " --> " + ip);
           ip_actual = ip.toString();
+
+          var obj = {ip: ip_actual}
+          jsonfile.writeFile(file, obj, function (err) {
+            console.error(err)
 
           var transporter = nodemailer.createTransport('smtps://'+usuariogmail+'%40gmail.com:'+contraseñagmail+'@smtp.gmail.com');
 
@@ -33,7 +41,7 @@ setInterval(function know_public_ip(){
             }
             console.log('Message sent: ' + info.response);
             });
-
+          });
         }
         else{
           console.log("IP pública no ha cambiado")
